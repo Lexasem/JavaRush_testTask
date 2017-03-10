@@ -11,6 +11,7 @@ pass: root
 таблица будет такая:
 
 mysql> show full columns from users;
+
 +-------------+--------------+-----------------+------+-----+---------+----------------+
 | Field       | Type         | Collation       | Null | Key | Default | Extra          |
 +-------------+--------------+-----------------+------+-----+---------+----------------+
@@ -20,7 +21,6 @@ mysql> show full columns from users;
 | isAdmin     | bit(1)       | NULL            | YES  |     | NULL    |                |
 | createdDate | datetime     | NULL            | YES  |     | NULL    |                |
 +-------------+--------------+-----------------+------+-----+---------+----------------+
-5 rows in set (0.04 sec)
 
 
 в каталог webapp я положил уже скомпилированное приложение angular2.
