@@ -9,10 +9,15 @@ pass: root
 то hibernate сам её создаст.
 
 таблица будет такая:
+
 id int(11) pri key aut_increment
+
 name varchar(255) utf8_general_ci
+
 age int(11)
+
 isAdmin bit(1)
+
 createdDate (datetime)
 
 
