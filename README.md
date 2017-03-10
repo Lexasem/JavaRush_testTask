@@ -9,18 +9,11 @@ pass: root
 то hibernate сам её создаст.
 
 таблица будет такая:
-
-mysql> show full columns from users;
-
-+-------------+--------------+-----------------+------+-----+---------+----------------+
-| Field       | Type         | Collation       | Null | Key | Default | Extra          |
-+-------------+--------------+-----------------+------+-----+---------+----------------+
-| id          | int(11)      | NULL            | NO   | PRI | NULL    | auto_increment |
-| name        | varchar(255) | utf8_general_ci | YES  |     | NULL    |                |
-| age         | int(11)      | NULL            | YES  |     | NULL    |                |
-| isAdmin     | bit(1)       | NULL            | YES  |     | NULL    |                |
-| createdDate | datetime     | NULL            | YES  |     | NULL    |                |
-+-------------+--------------+-----------------+------+-----+---------+----------------+
+id int(11) pri key aut_increment
+name varchar(255) utf8_general_ci
+age int(11)
+isAdmin bit(1)
+createdDate (datetime)
 
 
 в каталог webapp я положил уже скомпилированное приложение angular2.
