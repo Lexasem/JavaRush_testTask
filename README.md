@@ -1,5 +1,6 @@
 # JavaRush_testTask
-данные базы данных:
+##данные базы данных:
+
 host: localhost
 db: test
 login: root
@@ -10,20 +11,24 @@ pass: root
 
 таблица будет такая:
 
-mysql> show full columns from users;
+**id** int(11) pri key aut_increment<br>
+**name** varchar(255) utf8_general_ci<br>
+**age** int(11)<br>
+**isAdmin** bit(1)<br>
+**createdDate** (datetime)
 
-+-------------+--------------+-----------------+------+-----+---------+----------------+
-| Field       | Type         | Collation       | Null | Key | Default | Extra          |
-+-------------+--------------+-----------------+------+-----+---------+----------------+
-| id          | int(11)      | NULL            | NO   | PRI | NULL    | auto_increment |
-| name        | varchar(255) | utf8_general_ci | YES  |     | NULL    |                |
-| age         | int(11)      | NULL            | YES  |     | NULL    |                |
-| isAdmin     | bit(1)       | NULL            | YES  |     | NULL    |                |
-| createdDate | datetime     | NULL            | YES  |     | NULL    |                |
-+-------------+--------------+-----------------+------+-----+---------+----------------+
-
-
+##angular2
 в каталог webapp я положил уже скомпилированное приложение angular2.
 исходники доступны тут: https://github.com/Lexasem/JavaRush_testTask_angular2.git
 
-тестирвоал в tomcat 9
+
+##установка, запуск
+
+тестирвоал в tomcat 9<br>
+версия java 1.8
+
+процесс установки:<br>
+mvn package создает архив testtask-1.0.war, который потом можно загрузить в том кат.<br>
+Далее сервлет будет доступен по ссылке {server-host}/testtask-1.0/
+
+таблица users будет пустая, чтобы залить в неё тестовые данные нужно нажать на кнопку "добавить тестовые данные" (в приложении)
