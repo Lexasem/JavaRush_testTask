@@ -7,10 +7,14 @@ import testtask.controllers.entities.Entity;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Объект который передаётся в фронд энд в виде json
+ *
+ */
 public class Page {
-    public final static int itemsPerPage = 10;
-    public List<Entity> entities;
-    public int curentPage, pagesCount;
+    public final static int itemsPerPage = 10; //количество элементов на страницу todo вынести itemsPerPage в .properties file
+    public List<Entity> entities; //объекты из базы данных
+    public int curentPage, pagesCount; //curentPage - номер текущей страницы, pagesCount - общее число страниц
     public Page(){
         this.entities = new ArrayList<Entity>();
     }

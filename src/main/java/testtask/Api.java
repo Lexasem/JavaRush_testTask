@@ -11,6 +11,10 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+/** главный класс сервлета
+ *  при деплое инициализирует класс SessionFactory для обеспечения связи с БД
+ *  принимает ХТТП запросы от фронтэнда и создаёт объект Router
+ */
 public class Api extends HttpServlet {
 
     public static SessionFactory sf;
@@ -37,7 +41,6 @@ public class Api extends HttpServlet {
 
 
     @Override
-    //update item
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) {
         Router r = new Router(req, resp, Method.POST);
         r.displayResult();
@@ -59,7 +62,9 @@ public class Api extends HttpServlet {
 
     @Override
     protected void doOptions(HttpServletRequest req, HttpServletResponse resp) {
-        new Router(req, resp, Method.OPTIONS); //в конструкторе генерятся правильные заголовки
+
+        new Router(req, resp, Method.OPTIONS);
+        //r.displayResult() ненужно, т.к. в конструкторе инициализируются правильные заголовки
 
 
     }

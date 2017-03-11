@@ -14,17 +14,49 @@ import java.io.PrintWriter;
 import java.net.URLDecoder;
 import java.util.List;
 
+/**
+ * класс роутер запускает необходимые контроллеры, передаёт им команды и отправляет результат
+ * единственный метод public это displayResult()
+ *
+ * для настройки маршрутов используется метод execute(), который в зависимости от входящих параметров
+ * и типа HTTP запроса (GET, POST и т.д.) выбирает нужный контроллер и метод
+ *
+ */
 public class Router {
     protected HttpServletRequest req;
     protected HttpServletResponse resp;
     protected Method currentMethod;
     protected PrintWriter out;
-    protected BufferedReader in;
+    protected BufferedReader in; // если в ХТТП
     protected Session session;
 
-    protected String[] PramsArr;
+    /**
+     * String[] ParamsArr все параметры переданные в URL
+     * например: {host}/api/{param0}/{param1}/...
+     * ParamsArr[0] - от названия этого параметра зависит выбор контроллера
+     * ParamsArr[1] - от названия этого параметра зависит выбор метода контроллера
+     *
+     */
+    protected String[] PramsArr; //параметры переданные в URL
+
+    /**
+     * controllerName = paramsArr[0]
+     * methodName = paramsArr[1]
+     *
+     */
     protected String controllerName, methodName;
-    protected boolean readyToExec = false;
+
+    /**
+     * если нет контроллера в paramsArr, то не выполняется метод this.execute()
+     * и не инициализируется сессия с БД
+     *
+     */
+    protected boolean runController = false;
+
+    /**
+     * в эту переменную сохраняется результат работы контроллера
+     * в последствии этотот объект обрабатывается методом this.print()
+     */
     protected Object executionResult;
 
     public Router(HttpServletRequest req, HttpServletResponse resp, Method currentMethod) {
@@ -34,6 +66,14 @@ public class Router {
         initOut();
         initIn();
     }
+
+    /**
+     *
+     * этот метод, в зависимости от входящих параметров
+     * и HTTP метода выбирает нужный контроллер и метод
+     *
+     * todo вынести настройку маршрутов в файл .properties
+     */
 
     protected void execute() throws Exception {
         //util controller
@@ -65,6 +105,12 @@ public class Router {
         }
     }
 
+    /**
+     * инициализирует:
+     *   *необходимые заголовки для ответа
+     *   *переменную this.out
+     *
+     */
 
     protected void initOut() {
         try {
@@ -82,6 +128,9 @@ public class Router {
         }
     }
 
+    /**
+     * инициализирует переменную in
+     */
     protected void initIn() {
         try {
             in = req.getReader();
@@ -90,10 +139,18 @@ public class Router {
         }
     }
 
+    /**
+     * основной метод класса Router
+     * обрабатывает запрошенный URL
+     * инициализирует сессию с БД и запускает метод execute() (если в URL есть запрос контроллера)
+     * todo нужна проверка на существование маршрута (т.к. сессия инициализируется даже если такого маршрута нет)
+     * отправляет результат в переменную out
+     */
+
     public void displayResult() {
         try {
             parseRequest();
-            if (readyToExec) {
+            if (runController) {
                 initSession();
                 execute();
                 session.close();
@@ -104,6 +161,10 @@ public class Router {
             e.printStackTrace(out);
         }
     }
+
+    /**
+     * метод, который преобразует результат контроллера в json объект data и отправляет его
+     */
 
     protected void print() {
         String res = "{\"data\":";
@@ -131,12 +192,18 @@ public class Router {
         out.print(res);
     }
 
+    /**
+     * инициализация сессии с БД
+     */
     protected void initSession() {
         session = Api.sf.getCurrentSession();
         Transaction trans = session.getTransaction();
         if (!trans.isActive()) trans.begin();
     }
 
+    /**
+     * преобразует URL в paramsArr и присваивает значение переменным controllerName, methodName
+     */
     protected void parseRequest() {
         int paramsBegining = (req.getContextPath() + req.getServletPath()).length() + 1;
         if (paramsBegining >= req.getRequestURI().length()) return;
@@ -148,9 +215,13 @@ public class Router {
 
         controllerName = PramsArr.length >= 1 ? PramsArr[0].toLowerCase() : "";
         methodName = PramsArr.length >= 2 ? PramsArr[1].toLowerCase() : "";
-        readyToExec = true;
+        runController = true;
     }
 
+    /**
+     * 
+     * @return возвращает строку переданную в ХТТП запросе в body
+     */
     protected String readBody() {
         String res = "";
         try {

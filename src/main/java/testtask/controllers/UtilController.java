@@ -14,6 +14,9 @@ public class UtilController extends Controller {
 
     /**
      * этот метод вызывается если обратиться к урлу: api/util/addTestData
+     * или нажать на кнопку "добавить тестовые данные"
+     *
+     * фамилии взяты с сайта gofederation.ru (рейтинг лист игроков ГО)
      */
     public void addTestData() {
         try {

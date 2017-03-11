@@ -9,11 +9,19 @@ import testtask.controllers.entities.User;
 
 import java.io.IOException;
 
+/**
+ * UserController класс который выполняет действия с обхектами User (получает из базы, сохраняет в базу и т.д.)
+ */
 public class UserController extends Controller {
     public UserController(Session session) {
         super(session);
     }
 
+    /**
+     *
+     * @param json принимает объект User в json формате
+     * @return true если объект успешно создан
+     */
     public boolean create(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -24,6 +32,11 @@ public class UserController extends Controller {
         return false;
     }
 
+    /**
+     *
+     * @param pageNum номер страницы, которую нужно получить
+     * @return возвращает объект Page
+     */
     public Page getPage(int pageNum) {
         Page res = new Page();
         res.curentPage = pageNum;
@@ -42,6 +55,12 @@ public class UserController extends Controller {
         return res;
     }
 
+    /**
+     *
+     * @param pageNum номер страницы
+     * @param search поисковая строка
+     * @return возвращает объект Page
+     */
     public Page getPage(int pageNum, String search) {
         Page res = new Page();
         res.curentPage = pageNum;
@@ -61,6 +80,12 @@ public class UserController extends Controller {
         return res;
     }
 
+    /**
+     * удаялет пользователя из БД по id
+     * @param id id пользователя, которого необходимо удалить
+     * @return true если пользователь удален успешно
+     */
+
     public boolean delete(int id) {
         User u = getUser(id);
 
@@ -73,10 +98,12 @@ public class UserController extends Controller {
         }
     }
 
-    private boolean create(Entity user) {
-        return update(user);
-    }
-
+    /**
+     * обновляет пользователя в БД
+     *
+     * @param json принимает объект User в json формате (отредактирванную копию)
+     * @return true если отредактирован успешно
+     */
     public boolean update(String json) {
         try {
             ObjectMapper mapper = new ObjectMapper();
@@ -92,6 +119,12 @@ public class UserController extends Controller {
         } catch (IOException ignore) {
         }
         return false;
+    }
+
+    //***** private funcs ******
+
+    private boolean create(Entity user) {
+        return update(user);
     }
 
     private boolean update(Entity user) {
